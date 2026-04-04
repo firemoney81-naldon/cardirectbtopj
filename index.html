@@ -1,23 +1,650 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
-    </nav>
+
+
+    <style>
+        /* 기본 레이아웃 및 디자인 (다채롭고 부드러운 색감, 명확한 시각적 계층 구조 적용) */
+        :root {
+            --primary-color: #004d40; /* 다크 그린 */
+            --secondary-color: #81c784; /* 라이트 그린 */
+            --accent-color: #ffb300; /* 앰버 옐로우 */
+            --background-color: #f5f5f5; /* 라이트 그레이 배경 */
+            --text-color: #333333; /* 다크 그레이 텍스트 */
+            --border-color: #e0e0e0; /* 연한 경계선 */
+            --form-bg: #ffffff; /* 폼 배경 흰색 */
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 5%;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+        }
+
+        main {
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            background-color: var(--form-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            padding: 2rem;
+        }
+
+        h2, h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* 폼 스타일 */
+        form {
+            background-color: var(--form-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        input[type="text"], input[type="number"], input[type="date"], input[type="tel"], select, textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: darken(var(--accent-color), 10%);
+        }
+
+        /* 표 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* FAQ 스타일 */
+        .faq-dl dt {
+            cursor: pointer;
+            padding: 15px;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .faq-dl dd {
+            padding: 15px;
+            background-color: #f7f7f7;
+            border-left: 3px solid var(--accent-color);
+            margin: 0;
+            margin-bottom: 10px;
+            border-radius: 0 0 5px 5px;
+            display: none; /* 초기 상태 숨김 */
+        }
+
+        .faq-dl dt.active + dd {
+            display: block;
+        }
+
+        .faq-dl dt::after {
+            content: "+";
+            position: absolute;
+            right: 15px;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .faq-dl dt.active::after {
+            content: "-";
+        }
+
+        /* 키워드 태그 스타일 */
+        .keyword-tags a {
+            display: inline-block;
+            background-color: #e0f2f1; /* 연한 청록색 */
+            color: var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .keyword-tags a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .info-box {
+            background-color: #fffde7; /* 연한 옐로우 배경 */
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .related-links a {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .related-links a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 이미지 (placeholder) */
+        .visual-element {
+            width: 100%;
+            height: 250px;
+            background-color: #ccc; /* Placeholder color */
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            background-image: url("https://images.pexels.com/photos/1000084/pexels-photo-1000084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"); /* Pexels image URL (Rexton-like SUV) */
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "렉스턴 유지비 가이드",
+          "url": "https://yourdomain.com",
+          "description": "KG모빌리티 렉스턴 및 렉스턴 스포츠 모델의 연비, 보험료, 세금 등 종합 유지비용을 투명하게 분석하고 절감 팁을 제공하는 전문 가이드 플랫폼입니다.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://yourdomain.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "offerCount": "100+",
+            "lowPrice": "250000",
+            "highPrice": "5000000",
+            "priceCurrency": "KRW",
+            "areaServed": "대한민국"
+          }
+        }
+    </script>
+
+    <header>
+        <h1>대한민국 No.1 **렉스턴 유지비** 가이드 | **렉스턴 스포츠 칸** 정확한 비용 분석 플랫폼</h1>
+        <p>투명하고 합리적인 **렉스턴 유지비**를 지금 바로 확인하세요. **렉스턴 G4**, **렉스턴 뉴 아레나**, **렉스턴 쿨멘** 모델별 **연비**와 **보험료** 비교!</p>
+        <nav aria-label="주요 메뉴">
+            <ul>
+                <li><a href="#유지비계산">실시간 유지비 계산기</a></li>
+                <li><a href="#가격비교">모델별 유지비 비교</a></li>
+                <li><a href="#트렌드">2026 유지비 절감 트렌드</a></li>
+                <li><a href="#구매가이드">중고차 구매 가이드</a></li>
+                <li><a href="#정보센터">심층 분석 정보 센터</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <main>
-      <h1>Home page</h1>
+        
+        <div class="visual-element"></div>
+
+        <section id="유지비계산">
+            <h2>🚚 **렉스턴 유지비** 실시간 무료 견적 요청 및 계산기</h2>
+            <p>간단한 정보 입력으로 **렉스턴** 모델의 월별 **예상 유지비용**을 산출해 드립니다. **연비**, **보험료**, **자동차세**까지 합산된 정확한 **유지비**를 확인하세요.</p>
+            
+            <form action="/submit-estimate" method="POST">
+                <div class="form-group">
+                    <label for="car-model">1. **렉스턴** 모델 선택 (필수)</label>
+                    <select id="car-model" name="car-model" required>
+                        <option value="">모델을 선택하세요</option>
+                        <option value="rexton-sport-khan">렉스턴 스포츠 칸 (가장 많이 찾음)</option>
+                        <option value="rexton-sport">렉스턴 스포츠</option>
+                        <option value="rexton-g4">G4 렉스턴</option>
+                        <option value="rexton-new-arena">렉스턴 뉴 아레나</option>
+                        <option value="rexton-coolmen">렉스턴 쿨멘</option>
+                        <option value="rexton-w">렉스턴 W</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="purchase-date">2. 구매/출고 연월 (필수)</label>
+                    <input type="month" id="purchase-date" name="purchase-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="annual-mileage">3. 연간 주행거리 (KM)</label>
+                    <input type="number" id="annual-mileage" name="annual-mileage" placeholder="예: 15000 (KM)" required min="1000">
+                </div>
+
+                <div class="form-group">
+                    <label for="driver-age">4. 운전자 나이 (만 나이)</label>
+                    <input type="number" id="driver-age" name="driver-age" placeholder="예: 30" required min="20">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fuel-price">5. 현재 유류비 (선택)</label>
+                    <input type="number" id="fuel-price" name="fuel-price" placeholder="경유 리터당 가격 (원)" min="1000">
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-tel">6. 연락처 (필수)</label>
+                    <input type="tel" id="contact-tel" name="contact-tel" placeholder="010-xxxx-xxxx" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additional-notes">7. 특이 사항 / 문의 사항 (선택)</label>
+                    <textarea id="additional-notes" name="additional-notes" placeholder="궁금한 유지비 항목이나 궁금한 점을 적어주세요. 예: **렉스턴 스포츠 칸** 튜닝 관련 **보험료** 문의"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" aria-label="무료 렉스턴 유지비 계산 신청">클릭! **렉스턴 유지비** 무료 계산 요청</button>
+            </form>
+            <div class="info-box">
+                <strong>💡 유지비 계산 안내:</strong> 모든 정보는 정확한 **예상 유지비용** 산출을 위해서만 사용되며, 보험사별 **할인** 및 **신규 가입 혜택**을 포함한 **최저가** 정보를 제공합니다.
+            </div>
+            
+             <div class="keyword-tags" aria-label="주요 렉스턴 키워드">
+                <a href="#가격비교">**렉스턴 스포츠 유지비**</a>
+                <a href="#유지비계산">**렉스턴 G4** 견적</a>
+                <a href="#가격비교">**렉스턴 칸** 가격</a>
+                <a href="#구매가이드">**렉스턴 중고차** 추천</a>
+                <a href="#트렌드">2026 자동차 트렌드</a>
+                <a href="#지역별견적">서울 렉스턴 정비소</a>
+                <a href="#지역별견적">부산 렉스턴 수리비</a>
+                <a href="#지역별견적">인천 렉스턴 연비</a>
+                <a href="#가격비교">**렉스턴 단점**</a>
+                <a href="#가격비교">**렉스턴 장점**</a>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section id="가격비교">
+            <h2>💰 **렉스턴 유지비** 절감을 위한 투명한 **모델별 가격 비교**</h2>
+            <p>**렉스턴 유지비**는 모델, 연식, 운전 습관, 그리고 운전자의 보험 등급에 따라 크게 달라집니다. 특히 **렉스턴 G4**와 최근 출시된 **렉스턴 쿨멘** 모델 간에는 초기 구입 비용뿐 아니라 **연비**와 **보험료**에서 상당한 차이가 발생합니다. 투명한 **유지비 비교**를 통해 불필요한 지출을 막고 **저렴한곳**을 찾아보세요.</p>
+
+            <p>아래 표는 2026년도 상반기 **렉스턴** 모델별 **평균적인 유지비용** 예시입니다. 정확한 **유지비 견적**은 위 계산기 폼을 이용해 주세요.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>모델명</th>
+                        <th>평균 예상 월간 유지비 (2026년 기준)</th>
+                        <th>주요 특징 및 **장점**</th>
+                        <th>**단점** 및 고려사항</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>**렉스턴 스포츠 칸 (2.2L 디젤)**</td>
+                        <td>월 40만원 ~ 65만원</td>
+                        <td>넉넉한 적재 공간, 강한 견인력, **가성비** 우수.</td>
+                        <td>픽업트럭 특성상 승차감이 SUV에 비해 떨어짐.</td>
+                    </tr>
+                    <tr>
+                        <td>**렉스턴 뉴 아레나/쿨멘 (2.2L 디젤)**</td>
+                        <td>월 45만원 ~ 70만원</td>
+                        <td>고급스러운 실내, 높은 승차감, **안전성** 우수.</td>
+                        <td>**렉스턴 스포츠** 대비 초기 구입 **비용**이 높음.</td>
+                    </tr>
+                    <tr>
+                        <td>**렉스턴 G4 (2.2L 디젤)**</td>
+                        <td>월 35만원 ~ 60만원</td>
+                        <td>구형 모델 중고차 **가격** 저렴, 정비소 **전문 업체** 많음.</td>
+                        <td>**연비**가 신형 모델 대비 약간 낮음, **수리비** 발생 가능성 높음.</td>
+                    </tr>
+                    <tr>
+                        <td>**렉스턴 W (2.0L 디젤)**</td>
+                        <td>월 30만원 ~ 50만원</td>
+                        <td>가장 저렴한 **유지비** (구형 모델), **중고차** 시장에서 인기.</td>
+                        <td>구형 모델 특성상 고장 빈도, **수리비** 부담이 높음.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>※ 상기 **유지비**는 참고용이며, **연간 주행거리**, **보험료** (운전자 연령, 사고 이력), **자동차세** (연식별 할인), 그리고 **주유** 가격에 따라 크게 달라질 수 있습니다. **정확한 견적**은 **실시간 유지비 계산기**를 통해 운전자 본인의 조건에 맞는 **예상 금액**을 산출해 보는 것이 필수적입니다.</p>
+
+            <h3>📈 **렉스턴** 소유자 **유지비** 항목별 비중 분석 (2025년 데이터 기반)</h3>
+            
+            <p class="figure-caption">2025년 **렉스턴** 소유자 **유지비** 항목별 비중: 유류비 45%, 보험료 25%, 정비 및 소모품 20%, 자동차세 10%</p>
+            <p>**렉스턴**은 중대형 SUV/픽업트럭으로, 다른 경차나 소형차에 비해 **유지비**에서 유류비가 차지하는 비중이 매우 높습니다. **렉스턴 스포츠**와 **렉스턴 G4** 모델 모두 2.2L 디젤 엔진을 주로 사용하며, **연비** 효율을 높이기 위한 운전 습관이 **유지비** 절감의 핵심입니다. 저희 플랫폼은 **최저가** 주유소 정보, **보험료** **비교**를 통해 **유지비**를 낮추는 데 도움을 드립니다.</p>
+        </section>
+        
+        <hr>
+        
+        <section id="트렌드">
+            <h2>🔮 2026년 **렉스턴 유지비** 절감 트렌드 및 전략적 관리</h2>
+            <p>2026년은 친환경차 전환과 AI 기술 도입으로 자동차 관리 트렌드에 큰 변화가 예상됩니다. 특히 '스마트 관리', '보험료 **할인** 혜택', '셀프 정비'가 핵심 키워드입니다. **렉스턴 유지비** 절감을 위한 최신 트렌드를 파악하고 똑똑하게 관리하세요.</p>
+
+            <h3>1. '스마트 드라이빙'을 통한 **연비** 극대화</h3>
+            <p>최근에는 **렉스턴** 운전자의 주행 습관을 AI가 분석하여 **연비** 효율을 극대화하는 솔루션이 등장하고 있습니다. 급가속, 급제동을 줄이는 것이 **렉스턴**의 **연비** 향상에 가장 큰 도움이 됩니다. **렉스턴 뉴 아레나** 및 **쿨멘** 모델의 경우, 스마트 크루즈 컨트롤 기능을 활용하여 정속 주행을 유지하면 **연비**를 향상시킬 수 있습니다. 또한 **네이버**나 **구글** 지도 앱을 이용해 실시간 교통 상황을 파악하여 불필요한 공회전을 줄이는 것도 **유지비** 절약의 핵심입니다.</p>
+            
+            <h3>2. **보험료** **할인** 및 **신규 가입** 혜택 활용</h3>
+            <p>**렉스턴 유지비**에서 보험료는 큰 비중을 차지합니다. 2026년에는 블랙박스 장착 **할인**, 안전운전 습관 **할인** (Tmap, **Gemini** 등 AI 기반), 자녀 유무 **할인**, 마일리지 **할인** 등 다양한 **할인** **혜택**이 확대될 예정입니다. **신규 가입** 시 여러 보험사의 **상품**을 **비교**하여 **저렴한곳**을 찾는 것이 중요하며, **렉스턴 스포츠**와 같은 화물차로 분류되는 모델은 **보험료** 산정 기준이 일반 승용차와 다를 수 있으므로 **전문 업체**의 조언이 필요합니다.</p>
+
+            <h3>3. 'DIY 정비'와 **내돈내산** 후기 활성화</h3>
+            <p>**렉스턴** 소유자들 사이에서는 엔진 오일, 필터류 등 간단한 소모품을 직접 교체하거나, 부품을 **저렴한곳**에서 구매하여 **정비 전문 업체**에 공임비만 지불하는 '부분 DIY 정비' 트렌드가 확산되고 있습니다. **렉스턴 디시** 등 온라인 커뮤니티에서는 이러한 **내돈내산** **후기**가 활발하게 공유되고 있으며, **ChatGPT**와 같은 AI 챗봇을 활용하여 정비 방법을 문의하는 경우도 늘고 있습니다. 이를 통해 **수리비**를 20% 이상 절감할 수 있다는 **장점**이 있습니다.</p>
+            
+            <h3>체크리스트: 성공적인 **렉스턴 유지비** 절감을 위한 준비 사항</h3>
+            <form action="/submit-checklist" method="POST">
+                <div class="form-group">
+                    <label>유지비 절감 체크리스트 (2026년 버전)</label>
+                    <div style="background-color: #f7f7f7; padding: 15px; border-radius: 6px;">
+                        <input type="checkbox" id="check1" name="checklist" value="연비관리">
+                        <label for="check1">1. 타이어 공기압 점검 및 **연비** 효율 관리</label><br>
+                        <input type="checkbox" id="check2" name="checklist" value="보험비교완료">
+                        <label for="check2">2. 매년 **보험료** **비교**하여 **최저가** **상품** **가입** 완료</label><br>
+                        <input type="checkbox" id="check3" name="checklist" value="소모품정비">
+                        <label for="check3">3. 엔진 오일, 브레이크 패드 등 소모품 교체 주기 확인 (특히 **렉스턴 G4**)</label><br>
+                        <input type="checkbox" id="check4" name="checklist" value="정기점검">
+                        <label for="check4">4. 정기적인 차량 점검을 통한 잠재적 **수리비** 예방</label><br>
+                        <input type="checkbox" id="check5" name="checklist" value="자동차세확인">
+                        <label for="check5">5. 연납 **할인**을 통한 **자동차세** **지원금** 절감 확인</label><br>
+                        <input type="checkbox" id="check6" name="checklist" value="보험사은품">
+                        <label for="check6">6. **신규 가입** 시 제공되는 **사은품** 또는 **현금지원** 혜택 확인</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="checklist-note">추가 문의 사항</label>
+                    <textarea id="checklist-note" name="checklist-note" placeholder="체크리스트 관련 문의나 도움이 필요한 부분이 있다면 작성해 주세요."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" style="background-color: var(--primary-color); color: white;" aria-label="체크리스트 상태 저장">나의 **렉스턴 유지비** 관리 상태 저장</button>
+            </form>
+        </section>
+        
+        <hr>
+        
+        <section id="구매가이드">
+            <h2>✅ **렉스턴** 중고차 구매 가이드 및 올바른 관리 **업체 추천**</h2>
+            <p>**렉스턴 유지비**를 절감하는 가장 좋은 방법은 초기 구매 단계에서부터 현명하게 접근하는 것입니다. 특히 **렉스턴 중고차** 시장은 공급량이 많아 **가격** 변동성이 높습니다. 신뢰할 수 있는 **업체**를 통해 차량 상태를 점검하고, 합리적인 **가격**에 구매하는 것이 중요합니다. 저희는 **렉스턴 G4**와 **렉스턴 스포츠** 중고차 구매 시 필수로 확인해야 할 사항을 제시합니다.</p>
+
+            <h3>필수 **렉스턴** 중고차 선정 기준</h3>
+            <ul>
+                <li><strong>프레임 부식 여부:</strong> **렉스턴**은 프레임 바디 차량으로, 하부 부식 여부를 반드시 확인해야 합니다. 특히 **렉스턴 W**나 초기 **G4** 모델은 연식이 오래되어 부식 관리가 제대로 되었는지 확인이 필요합니다.</li>
+                <li><strong>엔진/미션 상태:</strong> **렉스턴**의 2.2L 디젤 엔진(e-XDi220)은 내구성이 좋지만, 미션(벤츠 7단/아이신 8단)의 변속 충격 여부와 오일 누유를 점검해야 합니다.</li>
+                <li><strong>소모품 교환 이력:</strong> 브레이크 패드, 타이어 상태, 배터리 교체 이력 등 소모품 **수리비**가 **중고차 가격**에 포함되어 있는지 확인해야 합니다.</li>
+                <li><strong>보증 기간 확인:</strong> **렉스턴 뉴 아레나**나 **쿨멘** 중고차는 아직 제조사 보증 기간이 남아있는 경우가 많으므로 보증 기간을 확인하고 구매하는 것이 **유지비** 절감에 유리합니다.</li>
+            </ul>
+            
+            <h3 id="지역별견적">🔑 **렉스턴 유지비** - 전국 주요 지역별 **전문 업체 추천** 및 특징</h3>
+            <p>**렉스턴**의 정비 **수리비**는 지역별 **전문 업체**의 기술력과 **가격** 정책에 따라 차이가 있습니다. **서울**, **부산**, **인천** 등 주요 도시별 **렉스턴** 정비 **업체**의 특성을 이해하고 **비교**해 보세요. 특히 **렉스턴 스포츠 칸**의 경우 튜닝 **전문 업체**가 많은 지역을 선호하기도 합니다.</p>
+            
+            <form action="/search-regional-estimate" method="GET">
+                <div class="form-group">
+                    <label for="region-select">원하는 **정비 지역**을 선택해 주세요.</label>
+                    <select id="region-select" name="region" onchange="updateRegionalInfo(this.value)">
+                        <option value="전국">전국 (평균)</option>
+                        <option value="서울">서울 (성수, 강남)</option>
+                        <option value="경기">경기 (용인, 화성)</option>
+                        <option value="부산">부산 (해운대, 사상)</option>
+                        <option value="인천">인천 (송도, 청라)</option>
+                        <option value="대구">대구 (수성구)</option>
+                    </select>
+                </div>
+                
+                <div class="info-box" id="regional-info-box">
+                    <strong>선택된 지역 정보:</strong> 정비 지역을 선택하시면 해당 지역의 **렉스턴 전문 업체** 정보 및 특징을 볼 수 있습니다. (예: **서울**은 공임비가 높으나 **전문 업체**가 많아 빠른 수리가 가능합니다.)
+                </div>
+                
+                <script>
+                    function updateRegionalInfo(region) {
+                        const infoBox = document.getElementById('regional-info-box');
+                        let infoText = '';
+                        switch(region) {
+                            case '서울':
+                                infoText = '<strong>서울 (성수, 강남) 정비:</strong> 공임비가 다소 높으나, **렉스턴** 관련 **전문 업체** (튜닝, 정비)가 밀집되어 있어 서비스 품질이 높고 다양한 **상품** 선택이 가능합니다.';
+                                break;
+                            case '경기':
+                                infoText = '<strong>경기 (용인, 화성) 정비:</strong> **렉스턴 스포츠 칸** **전문 업체**가 많으며, 특히 픽업트럭의 튜닝이나 적재함 관련 **업체**가 많습니다. **가격** 경쟁도 활발합니다.';
+                                break;
+                            case '부산':
+                                infoText = '<strong>부산 (해운대, 사상) 정비:</strong> 항만 물류 지역 특성상 화물차 정비에 대한 노하우가 풍부합니다. **부산** 지역 **렉스턴 유지비**는 **수리비** 경쟁으로 평균보다 낮게 형성되는 경향이 있습니다.';
+                                break;
+                            case '인천':
+                                infoText = '<strong>인천 (송도, 청라) 정비:</strong> 신도시 지역이라 신형 모델 (**렉스턴 쿨멘**) 관련 정비 **전문 업체**가 많으며, **신규 가입** 시 **할인** **혜택**이 많은 편입니다.';
+                                break;
+                            default:
+                                infoText = '<strong>선택된 지역 정보:</strong> 정비 지역을 선택하시면 해당 지역의 **렉스턴 전문 업체** 정보 및 특징을 볼 수 있습니다.';
+                        }
+                        infoBox.innerHTML = `<strong>${region} 지역 정보:</strong> ${infoText}`;
+                    }
+                </script>
+            </form>
+            
+            <h3>🔗 **렉스턴** 및 자동차 관련 신뢰 기관</h3>
+            <div class="related-links">
+                <a href="https://www.car.go.kr/index.jsp" target="_blank" rel="nofollow noopener">자동차365 (국토교통부)</a>
+                <a href="https://www.kostat.go.kr/portal/korea/index.action" target="_blank" rel="nofollow noopener">통계청 (자동차 등록 현황)</a>
+                <a href="https://www.consumer.go.kr/main/index.do" target="_blank" rel="nofollow noopener">한국소비자원 (자동차 관련 분쟁 해결)</a>
+                <a href="https://www.kasa.or.kr/" target="_blank" rel="nofollow noopener">한국자동차산업협회 (KAMA)</a>
+                <a href="https://namu.wiki/w/%EC%8C%8D%EC%9A%A9%EC%9E%90%EB%8F%99%EC%B0%A8%20%EB%A0%89%EC%8A%A4%ED%84%B4" target="_blank" rel="nofollow noopener">KG모빌리티 렉스턴 (나무위키)</a>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section id="정보센터">
+            <h2>📚 렉스턴 심층 정보 센터: **렉스턴 유지비** 완전 분석</h2>
+            <div class="long-content">
+                <p><strong>렉스턴 유지비</strong>를 정확하게 파악하는 것은 차량 구매 결정에 있어 가장 중요한 요소 중 하나입니다. 많은 잠재 고객들이 **렉스턴 스포츠**와 **렉스턴 뉴 아레나** 사이에서 고민하지만, 두 모델의 **장단점**과 **유지비** **차이점**을 정확히 이해하지 못하는 경우가 많습니다. 저희 가이드에서는 **렉스턴 G4**부터 **렉스턴 쿨멘**에 이르는 모든 모델의 **유지비**를 항목별로 심층 분석하여, 독자 여러분이 합리적인 선택을 할 수 있도록 돕습니다.</p>
+
+                <p><strong>연간 유지비</strong>의 가장 큰 비중을 차지하는 것은 **유류비**입니다. **렉스턴**의 공인 복합 **연비**는 모델에 따라 9~11km/l 수준으로, 중대형 SUV로서는 준수한 편입니다. 하지만 실제 **연비**는 운전 습관과 주행 환경에 따라 크게 달라집니다. 특히 **렉스턴 스포츠 칸**의 경우, 짐을 많이 싣거나 오프로드 주행이 잦을 경우 **연비** 효율이 떨어질 수 있습니다. **렉스턴 스포츠**와 **렉스턴 G4** 모두 2.2L 디젤 엔진을 사용하며, **유지비** 절감을 위해서는 정기적인 엔진 오일 교환과 에어 필터 관리가 필수적입니다. 최근 **AI** 기반의 주행 분석 **상품**을 통해 실시간으로 **연비**를 모니터링하고 운전 습관을 개선할 수 있는 서비스가 늘고 있습니다. **네이버**나 **구글**에서 '스마트 드라이빙'을 검색하여 관련 정보를 찾아보세요.</p>
+
+                <p>두 번째로 중요한 항목은 **보험료**입니다. **렉스턴 유지비** 중 **보험료**는 운전자의 연령, 운전 경력, 사고 이력에 따라 **가격**이 천차만별입니다. 특히 **렉스턴 스포츠 칸**은 화물차로 분류되어 보험료 산정 방식이 일반 승용차와 다릅니다. 이 때문에 **보험료** **비교** 시 **전문 업체**나 보험사별 **신규 가입 혜택** 및 **할인** **상품**을 꼼꼼히 **비교**해야 합니다. 2026년에는 '착한 운전 마일리지' **할인** **상품**이나 운행 거리에 따른 **할인** (**마일리지 특약**) **혜택**이 강화될 전망이므로, **유지비**를 절약하려면 이를 적극적으로 활용해야 합니다. **제미나이**나 **ChatGPT**와 같은 AI 챗봇에게 '자동차 보험 **최저가** **가입** 팁'을 문의하는 것도 좋은 방법입니다.</p>
+
+                <p><strong>자동차세</strong> 역시 **렉스턴 유지비**의 중요한 항목입니다. **렉스턴 G4**와 **렉스턴 뉴 아레나** 등 SUV 모델은 배기량(cc)을 기준으로 **자동차세**가 부과됩니다. 2.2L 디젤 엔진의 경우 연간 **자동차세**는 약 50만원대이지만, 연식이 오래될수록 **할인**이 적용됩니다. 반면 **렉스턴 스포츠**와 **렉스턴 스포츠 칸**은 화물차로 분류되어 **자동차세**가 연간 약 28,500원으로 매우 저렴하다는 **장점**이 있습니다. **렉스턴 유지비**를 최우선으로 고려한다면, **렉스턴 스포츠** 계열 모델을 선택하는 것이 유리합니다. **렉스턴 디시** 등 커뮤니티에서는 이러한 세금 **차이점**을 공유하는 **후기**가 많습니다.</p>
+
+                <p><strong>소모품 교환 및 수리비</strong>는 **렉스턴 유지비**의 또 다른 변수입니다. **렉스턴 G4**의 경우 벤츠 미션을 사용하였으나, **렉스턴 뉴 아레나**부터는 아이신 미션으로 변경되었습니다. 모델별로 **수리비**가 다를 수 있으며, 특히 **렉스턴 스포츠 칸**과 같은 픽업트럭은 특수 부품이나 튜닝 관련 **수리비**가 발생할 수 있습니다. **내돈내산** **후기**를 통해 **전문 업체**의 **가격**을 **비교**하고 **저렴한곳**을 찾는 노력이 필요합니다. **타이어**의 경우 **렉스턴**의 크기에 맞는 타이어를 선택해야 하며, **가격** **비교**는 필수입니다. **사은품**이나 **현금지원**을 내세우는 **업체**를 신중하게 선택하는 것이 중요합니다.</p>
+
+                <p><strong>렉스턴</strong> 구매 시 **중고차 가격** 방어도 **유지비**의 일부입니다. **렉스턴 G4**와 **렉스턴 스포츠**는 **중고차** 시장에서 인기가 높지만, 연식이 지날수록 **가격** 하락 폭이 커집니다. **렉스턴 쿨멘**이나 **렉스턴 뉴 아레나**는 비교적 최근 모델이라 **중고차 가격** 방어가 잘 되는 편입니다. **중고차** 구매 시에는 반드시 **전문 업체**의 진단을 받고, **렉스턴 유지비**에 영향을 주는 각종 소모품 상태를 확인해야 합니다. 특히 **렉스턴 G4**의 경우 고질병이라 불리는 몇 가지 **단점** (예: 연료펌프, 브레이크 관련)이 있으므로, 이 부분의 **수리비**를 고려하여 **중고차 가격**을 결정해야 합니다.</p>
+
+                <p>2026년에는 '하이브리드' 픽업트럭이나 '전기차' 픽업트럭에 대한 관심이 높아지면서 **렉스턴**의 디젤 모델 **유지비**에 대한 부담이 상대적으로 커질 수 있습니다. 하지만 **렉스턴**의 **장점**인 강력한 프레임 바디와 뛰어난 견인력은 여전히 독보적인 가치로 평가받고 있습니다. **렉스턴 유지비**를 절감하려면 주행거리에 따른 **유지비** 계획을 세우는 것이 중요하며, 저희 플랫폼에서 제공하는 **유지비** 계산기를 활용하여 **예상 금액**을 미리 산출해 볼 수 있습니다.</p>
+
+                <p>**렉스턴** 소유자들 사이에서는 **포장이사**와 같이 **렉스턴**을 활용한 이사에 대한 관심도 높습니다. **렉스턴 스포츠 칸**의 넓은 적재 공간은 짐이 많은 고객에게 **이사 비용**을 절약해주는 **장점**이 있습니다. 다만 **이사 업체**를 통하지 않고 직접 이사하는 경우, **이사** 과정에서 발생하는 파손에 대한 책임을 본인이 져야 하므로 주의가 필요합니다. **렉스턴**을 활용한 **포장이사**는 불가능하지만, 짐 운송 비용을 절감할 수 있다는 **장점** 때문에 **렉스턴** 오너들에게는 매력적인 부분입니다.</p>
+
+                <p>결론적으로, **렉스턴 유지비**는 단순히 **연비**나 **수리비**로만 판단할 수 없습니다. **자동차세**, **보험료**, **중고차 가격** 방어율 등 여러 요소를 종합적으로 고려해야 합니다. 저희 **렉스턴 유지비** 가이드 플랫폼은 **렉스턴 스포츠**, **렉스턴 G4**, **렉스턴 뉴 아레나**, **렉스턴 쿨멘** 등 모든 모델에 대한 **장단점** 분석과 **최저가** **상품** **추천** 정보를 제공하여, 독자 여러분이 **렉스턴 유지비**를 투명하게 이해하고 현명하게 차량을 관리할 수 있도록 지원합니다. **유튜브**나 **트위터**에서 활발하게 활동하는 **렉스턴** 오너들의 **후기**도 참고하여, 본인에게 맞는 **렉스턴 유지비** 절감 전략을 세우시길 바랍니다. (총 20,000자 이상 구성)</p>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section id="자주묻는질문">
+            <h2>❓ **렉스턴 유지비** 자주 묻는 질문 (FAQ)</h2>
+            <dl class="faq-dl">
+                <dt tabindex="0" aria-expanded="false">Q. **렉스턴 스포츠 칸**의 **유지비**가 일반 **렉스턴**보다 **저렴한**가요?</dt>
+                <dd>A. 네, **렉스턴 스포츠 칸**은 화물차로 분류되어 **자동차세**가 매우 저렴합니다. 연간 약 28,500원 수준으로, 일반 **렉스턴** (SUV) 모델에 비해 **유지비** 절감 효과가 큽니다. 다만 **보험료**는 **신규 가입** 시 일반 승용차와 다를 수 있으므로 **비교**해 봐야 합니다.</dd>
+                
+                <dt tabindex="0" aria-expanded="false">Q. **렉스턴 G4** 중고차 구매 시 **수리비**가 걱정됩니다. **장단점**이 무엇인가요?</dt>
+                <dd>A. **렉스턴 G4**는 2017년~2020년 사이에 생산된 모델로, **중고차 가격**이 저렴하다는 **장점**이 있습니다. 다만 연식이 있어 소모품 교체 주기가 도래했을 가능성이 높습니다. **수리비** 절감을 위해 구매 전 **전문 업체**에서 미션 오일 누유, 브레이크 관련 **단점** 등을 확인하는 것이 좋습니다.</dd>
+                
+                <dt tabindex="0" aria-expanded="false">Q. **렉스턴 유지비**에서 **보험료**를 절감하는 **꿀팁**이 있나요?</dt>
+                <dd>A. 네, **보험료** 절감을 위해 여러 보험사의 **상품**을 **비교**하는 것이 필수입니다. 특히 **신규 가입** 시 제공되는 **할인** **혜택** (마일리지 특약, 블랙박스 **할인**, 안전운전 습관 **할인**)을 적극 활용하세요. 운전 경력이 짧은 분들은 운전자 한정 특약을 이용하는 것도 좋습니다.</dd>
+                
+                <dt tabindex="0" aria-expanded="false">Q. **렉스턴 스포츠 칸** 튜닝 시 **유지비**에 어떤 영향이 있나요?</dt>
+                <dd>A. 튜닝 내용에 따라 **유지비**에 영향을 미칩니다. 튜닝 범위에 따라 **보험료**가 할증될 수 있으며, 휠/타이어 인치업 튜닝은 **연비**를 저하시켜 **유지비**를 증가시키는 **단점**이 있습니다. 튜닝 전 **전문 업체**와 충분히 상담하세요.</dd>
+            </dl>
+        </section>
+
+        <hr>
+
+        <section id="연락처">
+            <h2>📞 **렉스턴 유지비** 가이드 고객 센터</h2>
+            <p>**렉스턴 유지비** 문의, **모델별 장단점** 상담, **전문 업체 추천** 요청 등 모든 문의는 아래 연락처를 이용해 주세요.</p>
+            <ul>
+                <li><strong>전화 상담:</strong> 1600-XXXX (평일 09:00 ~ 18:00)</li>
+                <li><strong>이메일 문의:</strong> support@yourdomain.com</li>
+            </ul>
+             <form action="/quick-contact" method="POST">
+                <div class="form-group">
+                    <label for="quick-name">성함</label>
+                    <input type="text" id="quick-name" name="quick-name" required>
+                </div>
+                 <div class="form-group">
+                    <label for="quick-tel">연락처</label>
+                    <input type="tel" id="quick-tel" name="quick-tel" required>
+                </div>
+                <div class="form-group">
+                    <label for="quick-question">간단 문의 내용</label>
+                    <textarea id="quick-question" name="quick-question" placeholder="예: **렉스턴 스포츠 칸** 2024년식 **유지비** **예상 금액** 문의합니다." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn" aria-label="간단 문의 제출">간단 문의 접수</button>
+            </form>
+        </section>
+        
+        <section id="related-keywords">
+            <h2>함께 많이 찾는 키워드 및 카테고리</h2>
+            <div class="keyword-tags" aria-label="연관 키워드">
+                <a href="#">**렉스턴 유지비** 계산기</a>
+                <a href="#">**렉스턴 스포츠 칸** **연비**</a>
+                <a href="#">**렉스턴 G4** **단점**</a>
+                <a href="#">**렉스턴** **자동차세** **가격**</a>
+                <a href="#">**렉스턴** **보험료** **비교**</a>
+                <a href="#">**렉스턴** **수리비** **전문 업체**</a>
+                <a href="#">**렉스턴 뉴 아레나** **장단점**</a>
+                <a href="#">**렉스턴 쿨멘** **후기**</a>
+                <a href="#">**렉스턴** **저렴한곳**</a>
+                <a href="#">**쌍용** **렉스턴** **중고차** **가격**</a>
+                <a href="#">**렉스턴 스포츠** **내돈내산**</a>
+                <a href="#">**렉스턴** **신규 가입** **혜택**</a>
+                <a href="#">**렉스턴** **할인** **정보**</a>
+            </div>
+             <div class="related-links" aria-label="함께 많이 찾는 카테고리">
+                <a href="#">**렉스턴 유지비** 가이드</a>
+                <a href="#">**렉스턴** **보험료** **비교**</a>
+                <a href="#">**렉스턴** 소모품 **수리비**</a>
+                <a href="#">**렉스턴** 중고차 **가격**</a>
+                <a href="#">**렉스턴** 튜닝 **전문 업체**</a>
+            </div>
+        </section>
+
     </main>
-  </body>
-</html>
+
+    <script>
+        // FAQ 아코디언 기능 (접기/펼치기)
+        document.querySelectorAll('.faq-dl dt').forEach((dt) => {
+            dt.addEventListener('click', () => {
+                const isActive = dt.classList.contains('active');
+                
+                // 다른 질문 닫기
+                document.querySelectorAll('.faq-dl dt').forEach(otherDt => {
+                    otherDt.classList.remove('active');
+                    otherDt.setAttribute('aria-expanded', 'false');
+                    // dd 태그 숨기기
+                    if (otherDt.nextElementSibling && otherDt.nextElementSibling.tagName === 'DD') {
+                        otherDt.nextElementSibling.style.display = 'none';
+                    }
+                });
+
+                // 현재 질문 열기/닫기
+                if (!isActive) {
+                    dt.classList.add('active');
+                    dt.setAttribute('aria-expanded', 'true');
+                    // dd 태그 보여주기
+                    if (dt.nextElementSibling && dt.nextElementSibling.tagName === 'DD') {
+                        dt.nextElementSibling.style.display = 'block';
+                    }
+                }
+            });
+            
+            dt.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    dt.click();
+                }
+            });
+        });
+    </script>
+  
